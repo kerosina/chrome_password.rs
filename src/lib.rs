@@ -29,9 +29,9 @@ pub fn get_password(login_data_path: &std::path::PathBuf, key: &[u8]) -> Vec<Vec
   let mut statement = conn.prepare(query).unwrap();
   let mut logins = Vec::new();
   while let sqlite::State::Row = statement.next().unwrap() {
-    let url = statement.read::<String>(0).unwrap();
-    let username = statement.read::<String>(1).unwrap();
-    let password = statement.read::<Vec<u8>>(2).unwrap();
+    let url = statement.read(0).unwrap();
+    let username = statement.read(1).unwrap();
+    let password = statement.read(2).unwrap();
     let password = std::str::from_utf8(&aes_256_gcm_decrypt(key, password))
       .unwrap()
       .to_string();
